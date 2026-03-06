@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Phone, Shield } from 'lucide-react';
+import { Menu, X, Phone } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,58 +17,68 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Accueil', href: '#home' },
-    { name: 'Services', href: '#services' },
-    { name: 'À Propos', href: '#about' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'ACCUEIL', href: '/' },
+    { name: 'SERVICES', href: '/services' },
+    { name: 'À PROPOS', href: '/about' },
+    { name: 'CONTACT', href: '/contact' },
   ];
+
+  const isHome = location.pathname === '/';
+  const textColor = (isHome && !scrolled && !isOpen) ? 'var(--white)' : 'var(--text)';
 
   return (
     <nav
-      className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/90 backdrop-blur-md py-3 shadow-lg' : 'bg-transparent py-6'
-        }`}
+      className={`fixed w-full z-50 transition-all duration-300`}
+      style={{
+        backgroundColor: isOpen ? 'white' : (scrolled || !isHome ? 'white' : 'transparent'),
+        padding: '15px 0',
+        boxShadow: (scrolled || !isHome) ? '0 2px 20px rgba(0,0,0,0.05)' : 'none',
+        borderBottom: (scrolled || !isHome) ? '1px solid #f0f0f0' : 'none'
+      }}
     >
       <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <a href="#home" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: scrolled || isOpen ? 'var(--text)' : 'var(--white)' }}>
+        {/* Branding Area */}
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <img src="/logo.png" alt="VIP" style={{ height: '45px' }} />
           <div style={{
             fontFamily: 'var(--font-heading)',
-            fontSize: 'max(1.2rem, 1.5vw)',
+            fontSize: '1.2rem',
             fontWeight: 'bold',
-            letterSpacing: '1px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px'
+            letterSpacing: '2px',
+            color: (isHome && !scrolled && !isOpen) ? 'var(--white)' : 'var(--primary)',
+            textTransform: 'uppercase'
           }}>
-            <Shield size={28} color="var(--primary)" fill="var(--primary)" fillOpacity={0.2} />
-            VIP <span style={{ color: 'var(--primary)' }}>SÉCURITÉ</span> 31
+            VIP <span style={{ color: (isHome && !scrolled && !isOpen) ? 'var(--white)' : 'var(--primary)' }}>SÉCURITÉ</span> 31
           </div>
-        </a>
+        </Link>
 
-        {/* Desktop Menu */}
-        <div className="desktop-menu" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-          <ul style={{ display: 'flex', gap: '2rem' }}>
+        {/* Desktop Navigation */}
+        <div className="desktop-menu" style={{ display: 'flex', alignItems: 'center', gap: '3rem' }}>
+          <ul style={{ display: 'flex', gap: '2.5rem' }}>
             {navLinks.map((link) => (
               <li key={link.name}>
-                <a
-                  href={link.href}
-                  className="nav-link"
+                <Link
+                  to={link.href}
+                  className={`nav-link ${location.pathname === link.href ? 'active' : ''}`}
                   style={{
-                    fontSize: '0.85rem',
-                    fontWeight: scrolled ? '600' : '500',
-                    color: scrolled ? 'var(--text)' : 'var(--white)',
-                    textTransform: 'uppercase',
-                    letterSpacing: '1.5px',
-                    position: 'relative'
+                    fontSize: '0.8rem',
+                    fontWeight: '600',
+                    color: textColor,
+                    letterSpacing: '2px',
+                    position: 'relative',
+                    transition: 'color 0.3s ease'
                   }}
                 >
                   {link.name}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
-          <a href="tel:0782585748" className="btn btn-primary" style={{ borderRadius: '50px', padding: '0.8rem 1.5rem' }}>
-            <Phone size={16} />
-            <span className="hide-mobile">07 82 58 57 48</span>
+
+          {/* Contact Button - Matched to Image */}
+          <a href="tel:0782585748" className="nav-contact-btn">
+            <Phone size={18} fill="currentColor" />
+            <span>07 82 58 57 48</span>
           </a>
 
           <button
@@ -75,9 +87,8 @@ const Navbar = () => {
             style={{
               background: 'none',
               border: 'none',
-              color: scrolled || isOpen ? 'var(--text)' : 'var(--white)',
-              cursor: 'pointer',
-              zIndex: 100
+              color: isOpen ? 'var(--text)' : textColor,
+              cursor: 'pointer'
             }}
           >
             {isOpen ? <X size={32} /> : <Menu size={32} />}
@@ -89,46 +100,31 @@ const Navbar = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            style={{
-              position: 'fixed',
-              top: 0,
-              right: 0,
-              width: '100%',
-              height: '100vh',
-              backgroundColor: 'white',
-              zIndex: 90,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              padding: '2rem'
-            }}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: '100vh' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="mobile-nav-overlay"
           >
             <ul style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem', textAlign: 'center' }}>
               {navLinks.map((link) => (
                 <li key={link.name}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     onClick={() => setIsOpen(false)}
                     style={{
                       fontSize: '1.5rem',
                       fontWeight: 'bold',
                       color: 'var(--text)',
-                      textTransform: 'uppercase',
                       fontFamily: 'var(--font-heading)'
                     }}
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
               <li>
-                <a href="tel:0782585748" className="btn btn-primary" style={{ width: '100%', fontSize: '1.2rem' }}>
-                  <Phone size={24} />
+                <a href="tel:0782585748" className="nav-contact-btn" style={{ fontSize: '1.2rem', padding: '15px 30px' }}>
+                  <Phone size={24} fill="currentColor" />
                   07 82 58 57 48
                 </a>
               </li>
@@ -141,22 +137,58 @@ const Navbar = () => {
         .nav-link::after {
           content: '';
           position: absolute;
-          bottom: -5px;
-          left: 0;
+          bottom: -28px;
+          left: 50%;
+          transform: translateX(-50%);
           width: 0;
-          height: 2px;
+          height: 3px;
           background-color: var(--primary);
           transition: width 0.3s ease;
         }
-        .nav-link:hover::after {
-          width: 100%;
+        .nav-link.active::after {
+          width: 40px;
+        }
+        
+        .nav-contact-btn {
+          background-color: var(--primary);
+          color: white;
+          padding: 10px 25px;
+          border-radius: 6px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          font-family: var(--font-heading);
+          font-size: 0.9rem;
+          font-weight: bold;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 15px rgba(232, 74, 59, 0.2);
+        }
+
+        .nav-contact-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(232, 74, 59, 0.3);
+          background-color: #f15a4d;
         }
         
         .mobile-toggle {
           display: none !important;
         }
 
-        @media (max-width: 992px) {
+        .mobile-nav-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          background-color: white;
+          z-index: 90;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          overflow: hidden;
+        }
+
+        @media (max-width: 1100px) {
           .desktop-menu ul {
             display: none !important;
           }

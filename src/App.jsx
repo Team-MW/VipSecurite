@@ -1,30 +1,40 @@
-import React from 'react';
-import { HelmetProvider, Helmet } from 'react-helmet-async';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Services from './components/Services';
-import About from './components/About';
-import Contact from './components/Contact';
+import Home from './pages/Home';
+import ServicesPage from './pages/ServicesPage';
+import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage';
 import Footer from './components/Footer';
+
+// Scroll to top on route change
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
 
 function App() {
   return (
     <HelmetProvider>
-      <div className="app">
-        <Helmet>
-          <title>VIP SÉCURITÉ 31 | Agence de Sécurité à Toulouse</title>
-          <meta name="description" content="VIP SÉCURITÉ 31 propose des services de sécurité incendie, gardiennage, et prévention à Toulouse. Expert en sécurité cynophile et intervention." />
-        </Helmet>
-
-        <Navbar />
-        <main>
-          <Hero />
-          <Services />
-          <About />
-          <Contact />
-        </main>
-        <Footer />
-      </div>
+      <Router>
+        <div className="app">
+          <ScrollToTop />
+          <Navbar />
+          <main>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </Router>
     </HelmetProvider>
   );
 }

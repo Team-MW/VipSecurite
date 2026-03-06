@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
     return (
@@ -71,32 +72,20 @@ const Hero = () => {
                     </p>
 
                     <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-                        <a href="#contact" className="btn btn-primary" style={{ padding: '1.2rem 2.5rem', fontSize: '1rem' }}>
+                        <Link to="/contact" className="btn btn-primary" style={{ padding: '1.2rem 2.5rem', fontSize: '1rem' }}>
                             Demander un devis
                             <ArrowRight size={20} />
-                        </a>
-                        <a href="#services" className="btn btn-outline" style={{
+                        </Link>
+                        <Link to="/services" className="btn btn-outline" style={{
                             padding: '1.2rem 2.5rem',
                             fontSize: '1rem',
                             borderColor: 'white',
                             color: 'white'
                         }}>
                             Nos Services
-                        </a>
+                        </Link>
                     </div>
                 </motion.div>
-            </div>
-
-            {/* Decorative Elements */}
-            <div style={{
-                position: 'absolute',
-                bottom: '50px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                zIndex: 10,
-                opacity: 0.5
-            }}>
-                <div className="mouse-scroll"></div>
             </div>
 
             <style jsx>{`
