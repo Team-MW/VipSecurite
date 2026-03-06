@@ -24,20 +24,29 @@ const Navbar = () => {
   ];
 
   const isHome = location.pathname === '/';
-  const textColor = (isHome && !scrolled && !isOpen) ? 'var(--white)' : 'var(--text)';
+
+  // SOLUTION: On force une couleur sombre si on n'est pas sur l'accueil OU si on a scrollé.
+  // Si on est sur l'accueil ET qu'on n'a pas scrollé, on met blanc SEULEMENT SI le fond du Hero est sombre.
+  // Pour être SÛR que l'utilisateur voit le texte, on va mettre un léger fond ou forcer le noir si l'utilisateur ne voit rien.
+  const textColor = (isHome && !scrolled && !isOpen) ? '#FFFFFF' : '#111827';
+  const navBackground = (isHome && !scrolled && !isOpen) ? 'rgba(0,0,0,0.1)' : '#FFFFFF';
 
   return (
     <nav
-      className={`fixed w-full z-50 transition-all duration-300`}
+      className="main-navbar"
       style={{
-        backgroundColor: isOpen ? 'white' : (scrolled || !isHome ? 'white' : 'transparent'),
-        padding: '15px 0',
-        boxShadow: (scrolled || !isHome) ? '0 2px 20px rgba(0,0,0,0.05)' : 'none',
-        borderBottom: (scrolled || !isHome) ? '1px solid #f0f0f0' : 'none'
+        position: 'fixed',
+        top: 0,
+        width: '100%',
+        zIndex: 1000,
+        transition: 'all 0.4s ease',
+        backgroundColor: navBackground,
+        padding: scrolled ? '10px 0' : '20px 0',
+        boxShadow: (scrolled || !isHome) ? '0 4px 20px rgba(0,0,0,0.1)' : 'none',
+        backdropFilter: (isHome && !scrolled) ? 'blur(5px)' : 'none'
       }}
     >
       <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        {/* Branding Area */}
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
           <img src="/logo.png" alt="VIP" style={{ height: '45px' }} />
           <div style={{
@@ -45,28 +54,27 @@ const Navbar = () => {
             fontSize: '1.2rem',
             fontWeight: 'bold',
             letterSpacing: '2px',
-            color: (isHome && !scrolled && !isOpen) ? 'var(--white)' : 'var(--primary)',
+            color: (isHome && !scrolled && !isOpen) ? '#FFFFFF' : 'var(--primary)',
             textTransform: 'uppercase'
           }}>
-            VIP <span style={{ color: (isHome && !scrolled && !isOpen) ? 'var(--white)' : 'var(--primary)' }}>SÉCURITÉ</span> 31
+            VIP SÉCURITÉ 31
           </div>
         </Link>
 
-        {/* Desktop Navigation */}
-        <div className="desktop-menu" style={{ display: 'flex', alignItems: 'center', gap: '3rem' }}>
-          <ul style={{ display: 'flex', gap: '2.5rem' }}>
+        <div className="desktop-menu" style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }}>
+          <ul style={{ display: 'flex', gap: '2rem', listStyle: 'none', margin: 0, padding: 0 }}>
             {navLinks.map((link) => (
               <li key={link.name}>
                 <Link
                   to={link.href}
-                  className={`nav-link ${location.pathname === link.href ? 'active' : ''}`}
+                  className={`nav-item ${location.pathname === link.href ? 'active' : ''}`}
                   style={{
-                    fontSize: '0.8rem',
-                    fontWeight: '600',
+                    fontSize: '0.85rem',
+                    fontWeight: '700',
                     color: textColor,
-                    letterSpacing: '2px',
-                    position: 'relative',
-                    transition: 'color 0.3s ease'
+                    letterSpacing: '1.5px',
+                    textDecoration: 'none',
+                    display: 'block'
                   }}
                 >
                   {link.name}
@@ -75,20 +83,20 @@ const Navbar = () => {
             ))}
           </ul>
 
-          {/* Contact Button - Matched to Image */}
-          <a href="tel:0782585748" className="nav-contact-btn">
+          <a href="tel:0782585748" className="nav-call-button">
             <Phone size={18} fill="currentColor" />
             <span>07 82 58 57 48</span>
           </a>
 
           <button
-            className="mobile-toggle"
+            className="mobile-btn"
             onClick={() => setIsOpen(!isOpen)}
             style={{
               background: 'none',
               border: 'none',
-              color: isOpen ? 'var(--text)' : textColor,
-              cursor: 'pointer'
+              color: textColor,
+              cursor: 'pointer',
+              display: 'none'
             }}
           >
             {isOpen ? <X size={32} /> : <Menu size={32} />}
@@ -96,48 +104,14 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: '100vh' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="mobile-nav-overlay"
-          >
-            <ul style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem', textAlign: 'center' }}>
-              {navLinks.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    to={link.href}
-                    onClick={() => setIsOpen(false)}
-                    style={{
-                      fontSize: '1.5rem',
-                      fontWeight: 'bold',
-                      color: 'var(--text)',
-                      fontFamily: 'var(--font-heading)'
-                    }}
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <a href="tel:0782585748" className="nav-contact-btn" style={{ fontSize: '1.2rem', padding: '15px 30px' }}>
-                  <Phone size={24} fill="currentColor" />
-                  07 82 58 57 48
-                </a>
-              </li>
-            </ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       <style jsx>{`
-        .nav-link::after {
+        .nav-item {
+          position: relative;
+        }
+        .nav-item::after {
           content: '';
           position: absolute;
-          bottom: -28px;
+          bottom: -10px;
           left: 50%;
           transform: translateX(-50%);
           width: 0;
@@ -145,61 +119,85 @@ const Navbar = () => {
           background-color: var(--primary);
           transition: width 0.3s ease;
         }
-        .nav-link.active::after {
-          width: 40px;
+        .nav-item.active::after {
+          width: 30px;
         }
         
-        .nav-contact-btn {
+        .nav-call-button {
           background-color: var(--primary);
           color: white;
-          padding: 10px 25px;
-          border-radius: 6px;
+          padding: 12px 24px;
+          border-radius: 4px;
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: 10px;
           font-family: var(--font-heading);
           font-size: 0.9rem;
           font-weight: bold;
-          transition: all 0.3s ease;
-          box-shadow: 0 4px 15px rgba(232, 74, 59, 0.2);
+          text-decoration: none;
+          transition: transform 0.2s;
         }
 
-        .nav-contact-btn:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba(232, 74, 59, 0.3);
+        .nav-call-button:hover {
+          transform: scale(1.05);
           background-color: #f15a4d;
         }
-        
-        .mobile-toggle {
-          display: none !important;
-        }
 
-        .mobile-nav-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          background-color: white;
-          z-index: 90;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          overflow: hidden;
-        }
-
-        @media (max-width: 1100px) {
+        @media (max-width: 1024px) {
           .desktop-menu ul {
-            display: none !important;
-          }
-          .mobile-toggle {
-            display: block !important;
-          }
-          .hide-mobile {
             display: none;
+          }
+          .mobile-btn {
+            display: block !important;
           }
         }
       `}</style>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            style={{
+              position: 'fixed',
+              top: 0,
+              right: 0,
+              width: '100%',
+              height: '100vh',
+              backgroundColor: 'white',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '2rem',
+              zIndex: 2000
+            }}
+          >
+            <button
+              onClick={() => setIsOpen(false)}
+              style={{ position: 'absolute', top: '20px', right: '20px', background: 'none', border: 'none' }}
+            >
+              <X size={40} />
+            </button>
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                to={link.href}
+                onClick={() => setIsOpen(false)}
+                style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#111', textDecoration: 'none', fontFamily: 'var(--font-heading)' }}
+              >
+                {link.name}
+              </Link>
+            ))}
+            <a href="tel:0782585748" className="nav-call-button" style={{ fontSize: '1.2rem' }}>
+              <Phone size={24} fill="currentColor" />
+              07 82 58 57 48
+            </a>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };

@@ -38,7 +38,7 @@ const Footer = () => {
                             <li><Link to="/services" style={{ opacity: 0.7 }}>Nos Services</Link></li>
                             <li><Link to="/about" style={{ opacity: 0.7 }}>À Propos</Link></li>
                             <li><Link to="/contact" style={{ opacity: 0.7 }}>Contact & Devis</Link></li>
-                            <li><a href="#" style={{ opacity: 0.7 }}>Mentions Légales</a></li>
+                            <li><Link to="/mentions-legales" style={{ opacity: 0.7 }}>Mentions Légales</Link></li>
                         </ul>
                     </div>
 

@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import ServicesPage from './pages/ServicesPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
+import MentionsLegales from './pages/MentionsLegales';
 import Footer from './components/Footer';
 
 // Scroll to top on route change
@@ -30,6 +31,7 @@ function App() {
               <Route path="/services" element={<ServicesPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/mentions-legales" element={<MentionsLegales />} />
             </Routes>
           </main>
           <Footer />
