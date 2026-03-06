@@ -119,7 +119,7 @@ const Contact = () => {
                         }}
                     >
                         <form style={{ display: 'grid', gap: '20px' }} onSubmit={(e) => e.preventDefault()}>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                            <div className="grid-2" style={{ gap: '20px' }}>
                                 <input type="text" placeholder="Nom" style={inputStyle} required />
                                 <input type="email" placeholder="Email" style={inputStyle} required />
                             </div>

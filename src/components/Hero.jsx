@@ -71,8 +71,8 @@ const Hero = () => {
                         Une expertise de pointe pour votre sérénité et la protection de vos biens.
                     </p>
 
-                    <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-                        <Link to="/contact" className="btn btn-primary" style={{ padding: '1.2rem 2.5rem', fontSize: '1rem' }}>
+                    <div className="hero-btns" style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+                        <Link to="/contact" className="btn btn-primary" style={{ padding: '1.2rem 2.5rem', fontSize: '1rem', flex: '1 1 auto', minWidth: '200px' }}>
                             Demander un devis
                             <ArrowRight size={20} />
                         </Link>
@@ -80,7 +80,9 @@ const Hero = () => {
                             padding: '1.2rem 2.5rem',
                             fontSize: '1rem',
                             borderColor: 'white',
-                            color: 'white'
+                            color: 'white',
+                            flex: '1 1 auto',
+                            minWidth: '200px'
                         }}>
                             Nos Services
                         </Link>

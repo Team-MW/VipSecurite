@@ -24,10 +24,6 @@ const Navbar = () => {
   ];
 
   const isHome = location.pathname === '/';
-
-  // SOLUTION: On force une couleur sombre si on n'est pas sur l'accueil OU si on a scrollé.
-  // Si on est sur l'accueil ET qu'on n'a pas scrollé, on met blanc SEULEMENT SI le fond du Hero est sombre.
-  // Pour être SÛR que l'utilisateur voit le texte, on va mettre un léger fond ou forcer le noir si l'utilisateur ne voit rien.
   const textColor = (isHome && !scrolled && !isOpen) ? '#FFFFFF' : '#111827';
   const navBackground = (isHome && !scrolled && !isOpen) ? 'rgba(0,0,0,0.1)' : '#FFFFFF';
 
@@ -47,13 +43,13 @@ const Navbar = () => {
       }}
     >
       <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          <img src="/logo.png" alt="VIP" style={{ height: '45px' }} />
-          <div style={{
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <img src="/logo.png" alt="VIP" style={{ height: 'clamp(35px, 5vw, 45px)' }} />
+          <div className="brand-text" style={{
             fontFamily: 'var(--font-heading)',
-            fontSize: '1.2rem',
+            fontSize: 'clamp(0.9rem, 3vw, 1.2rem)',
             fontWeight: 'bold',
-            letterSpacing: '2px',
+            letterSpacing: '1px',
             color: (isHome && !scrolled && !isOpen) ? '#FFFFFF' : 'var(--primary)',
             textTransform: 'uppercase'
           }}>
@@ -61,18 +57,18 @@ const Navbar = () => {
           </div>
         </Link>
 
-        <div className="desktop-menu" style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }}>
-          <ul style={{ display: 'flex', gap: '2rem', listStyle: 'none', margin: 0, padding: 0 }}>
+        <div className="desktop-menu" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+          <ul style={{ display: 'flex', gap: '1.5rem', listStyle: 'none', margin: 0, padding: 0 }}>
             {navLinks.map((link) => (
               <li key={link.name}>
                 <Link
                   to={link.href}
                   className={`nav-item ${location.pathname === link.href ? 'active' : ''}`}
                   style={{
-                    fontSize: '0.85rem',
+                    fontSize: '0.8rem',
                     fontWeight: '700',
                     color: textColor,
-                    letterSpacing: '1.5px',
+                    letterSpacing: '1px',
                     textDecoration: 'none',
                     display: 'block'
                   }}
@@ -83,8 +79,8 @@ const Navbar = () => {
             ))}
           </ul>
 
-          <a href="tel:0782585748" className="nav-call-button">
-            <Phone size={18} fill="currentColor" />
+          <a href="tel:0782585748" className="nav-call-button hide-mobile-tablet">
+            <Phone size={16} fill="currentColor" />
             <span>07 82 58 57 48</span>
           </a>
 
@@ -96,10 +92,11 @@ const Navbar = () => {
               border: 'none',
               color: textColor,
               cursor: 'pointer',
-              display: 'none'
+              display: 'none',
+              padding: '5px'
             }}
           >
-            {isOpen ? <X size={32} /> : <Menu size={32} />}
+            {isOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
       </div>
@@ -107,48 +104,55 @@ const Navbar = () => {
       <style jsx>{`
         .nav-item {
           position: relative;
+          padding: 5px 0;
         }
         .nav-item::after {
           content: '';
           position: absolute;
-          bottom: -10px;
+          bottom: -5px;
           left: 50%;
           transform: translateX(-50%);
           width: 0;
-          height: 3px;
+          height: 2px;
           background-color: var(--primary);
           transition: width 0.3s ease;
         }
         .nav-item.active::after {
-          width: 30px;
+          width: 20px;
         }
         
         .nav-call-button {
           background-color: var(--primary);
           color: white;
-          padding: 12px 24px;
+          padding: 8px 16px;
           border-radius: 4px;
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 8px;
           font-family: var(--font-heading);
-          font-size: 0.9rem;
+          font-size: 0.8rem;
           font-weight: bold;
           text-decoration: none;
           transition: transform 0.2s;
         }
 
         .nav-call-button:hover {
-          transform: scale(1.05);
+          transform: translateY(-2px);
           background-color: #f15a4d;
         }
 
         @media (max-width: 1024px) {
-          .desktop-menu ul {
-            display: none;
+          .desktop-menu ul, .hide-mobile-tablet {
+            display: none !important;
           }
           .mobile-btn {
             display: block !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .brand-text span {
+             display: none;
           }
         }
       `}</style>
@@ -177,22 +181,29 @@ const Navbar = () => {
           >
             <button
               onClick={() => setIsOpen(false)}
-              style={{ position: 'absolute', top: '20px', right: '20px', background: 'none', border: 'none' }}
+              style={{ position: 'absolute', top: '20px', right: '20px', background: 'none', border: 'none', color: '#111' }}
             >
-              <X size={40} />
+              <X size={35} />
             </button>
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 to={link.href}
                 onClick={() => setIsOpen(false)}
-                style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#111', textDecoration: 'none', fontFamily: 'var(--font-heading)' }}
+                style={{
+                  fontSize: '1.5rem',
+                  fontWeight: 'bold',
+                  color: '#111',
+                  textDecoration: 'none',
+                  fontFamily: 'var(--font-heading)',
+                  letterSpacing: '2px'
+                }}
               >
                 {link.name}
               </Link>
             ))}
-            <a href="tel:0782585748" className="nav-call-button" style={{ fontSize: '1.2rem' }}>
-              <Phone size={24} fill="currentColor" />
+            <a href="tel:0782585748" className="nav-call-button" style={{ fontSize: '1.1rem', padding: '15px 30px' }}>
+              <Phone size={20} fill="currentColor" />
               07 82 58 57 48
             </a>
           </motion.div>

@@ -5,7 +5,7 @@ import { Target, Users, Award } from 'lucide-react';
 const About = () => {
     return (
         <section id="about" className="section" style={{ backgroundColor: 'white' }}>
-            <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '60px', alignItems: 'center' }}>
+            <div className="container grid-responsive" style={{ gap: '60px', alignItems: 'center' }}>
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     whileInView={{ opacity: 1, scale: 1 }}
