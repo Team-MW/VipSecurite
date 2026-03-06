@@ -9,8 +9,10 @@ const Home = () => {
     return (
         <>
             <Helmet>
-                <title>Accueil | VIP SÉCURITÉ 31 - Excellence en Sécurité Toulouse</title>
-                <meta name="description" content="VIP SÉCURITÉ 31 : Votre partenaire premium pour la sécurité, le gardiennage et la prévention incendie à Toulouse 31100. Disponibilité 24/7." />
+                <title>VIP SÉCURITÉ 31 | Agence de Sécurité et Gardiennage à Toulouse</title>
+                <meta name="description" content="Agence de sécurité VIP SÉCURITÉ 31 à Toulouse. Professionnels du gardiennage, sécurité incendie SSIAP, et protection des biens. Devis gratuit sous 24h. Intervention 24/7." />
+                <meta name="keywords" content="sécurité toulouse, agence sécurité 31, gardiennage toulouse, ssiap 31, intervention rapide, agent sécurité événementiel" />
+                <link rel="canonical" href="https://vipsecurite31.com/" />
             </Helmet>
             <Hero />
             <Services />

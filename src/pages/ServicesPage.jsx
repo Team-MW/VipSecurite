@@ -9,8 +9,9 @@ const ServicesPage = () => {
         <div style={{ paddingTop: '100px' }}>
             <Helmet>
                 <title>Services de Sécurité et Gardiennage | VIP SÉCURITÉ 31 Toulouse</title>
-                <meta name="description" content="Découvrez nos prestations de sécurité sur mesure à Toulouse : agent de sécurité incendie SSIAP, gardiennage de chantier, agent cynophile et intervention rapide sur alarme." />
+                <meta name="description" content="Découvrez nos prestations de sécurité sur mesure à Toulouse : agent de sécurité incendie SSIAP, gardiennage de chantier, agent cynophile et intervention rapide sur alarme. Expertise 24/7." />
                 <meta name="keywords" content="sécurité toulouse, gardiennage haute-garonne, ssiap 1 toulouse, agent cynophile 31, surveillance chantier, intervention alarme" />
+                <link rel="canonical" href="https://vipsecurite31.com/services" />
             </Helmet>
 
             <div className="container" style={{ textAlign: 'center', marginBottom: '40px' }}>
